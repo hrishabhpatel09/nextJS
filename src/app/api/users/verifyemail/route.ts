@@ -5,9 +5,9 @@ import {NextRequest,NextResponse} from 'next/server'
 
 connectDB()
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
     try {
-        const req =await request.json()
+        const req = await request.json()
         const {token} = req;
         console.log(token)
             if(!token) return NextResponse.json({message:"Token Not Found"})

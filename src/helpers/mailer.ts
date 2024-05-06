@@ -1,14 +1,13 @@
 import User from "@/schemas/userModel.Schema";
 import nodemailer from "nodemailer";
 import bcrypt from 'bcrypt'
-import { NextResponse } from "next/server";
 
 const transporter = nodemailer.createTransport({
   host: "sandbox.smtp.mailtrap.io",
   port: 2525,
   auth: {
-    user: "0bfea38b62aa4e",
-    pass: "6608724e7b9cf0"
+    user: process.env.TRANSPORTER_USER,
+    pass: process.env.TRANSPORTER_PASS
   }
 });
 export const sendEmail = async ({ email, emailType, userId }:any) => {
@@ -17,14 +16,18 @@ export const sendEmail = async ({ email, emailType, userId }:any) => {
     const verifyToken = await bcrypt.hash(userId.toString(),10)
     if(emailType==='VERIFY'){
       await User.findByIdAndUpdate(userId,{
-        verifyToken:verifyToken,
-        verifyTokenExpiry :Date.now() + 3600000
+        $set:{
+          verifyToken:verifyToken,
+          verifyTokenExpiry :Date.now() + 3600000
+        }
       })
     }
     else if(emailType==='RESET'){
       await User.findByIdAndUpdate(userId,{
-        forgotPasswordToken:verifyToken,
-        forgotPasswordTokenExpiry :Date.now() + 3600000
+        $set:{
+          forgotPasswordToken:verifyToken,
+          forgotPasswordTokenExpiry :Date.now() + 3600000
+        }
       })
     }
     const mailOptions = {
