@@ -31,7 +31,7 @@ export const sendEmail = async ({ email, emailType, userId }:any) => {
       from: 'hrishabhpatel2023.ai',
       to: email,
       subject: emailType==='VERIFY'?'Verify Your Email':'Reset Your Password',
-      html: `<a href="${process.env.DOMAIN}/verifyToken">Click Here</a> to ${emailType=='VERIFY'?'verify your email':'reset your password'}`,
+      html: `<a href="http://localhost:3000/api/users/verifyemail?token=${verifyToken}">Click Here</a> to ${emailType=='VERIFY'?'verify your email':'reset your password'}`,
     };
     const mailResponse = await transporter.sendMail(mailOptions);
   } catch (error:any) {

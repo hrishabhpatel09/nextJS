@@ -8,11 +8,9 @@ connectDB()
 
 export async function POST(request:NextRequest) {
     try {
-        const reqBody = request.json()
-        reqBody
-        .then(async(req)=>{
-        const {username,email,password}:any= req
-        TODO: //Validation
+        const reqBody = await request.json();
+        const {username,email,password}= reqBody
+        // TODO: //Validation
         console.log(email)
         const user = await User.findOne({email})
         if(user){
@@ -36,10 +34,6 @@ export async function POST(request:NextRequest) {
             message: 'User registered Succesfully',
             success: true,
             savedUser
-        })
-        })
-        .catch((err)=>{
-            console.log(err)
         })
     } catch (error:any) {
         return NextResponse.json({
